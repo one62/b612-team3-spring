@@ -36,4 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
+# application properties(깃허브 시크릿 이용)
+src/main/resources/application*
 
