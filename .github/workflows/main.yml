@@ -51,5 +51,5 @@ jobs:
           script: |
             docker pull ${{ secrets.DOCKER_REPO }}:spring
             docker stop spring-container
-            docker run -d --network=host --name spring-container ${{ secrets.DOCKER_REPO }}:spring
+            docker run -d -p 8080:8080 --network=host --name spring-container ${{ secrets.DOCKER_REPO }}:spring
       
