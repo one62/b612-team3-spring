@@ -40,7 +40,7 @@ public class Course {
     private User createdUser;
 
     // 초기값 필요한 값들은 모두 추가해야함
-    public Course creatCourse(User user, Integer meter) {
+    public Course createCourse(User user, Integer meter) {
         Course course = new Course();
         course.setCreatedUser(user);
         course.setMeter(meter);
