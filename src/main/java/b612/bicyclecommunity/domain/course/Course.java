@@ -25,13 +25,25 @@ public class Course {
      *
      */
     @Column(name = "course_array_url")
-    private String array_url;
+    private String arrayUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "course_difficulty")
     private Difficulty difficulty;
 
+    // 경로 거리
+    @Column(name = "course_meter")
+    private Integer meter;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User created_user;
+    private User createdUser;
+
+    // 초기값 필요한 값들은 모두 추가해야함
+    public Course creatCourse(User user, Integer meter) {
+        Course course = new Course();
+        course.setCreatedUser(user);
+        course.setMeter(meter);
+        return course;
+    }
 }
