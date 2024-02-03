@@ -1,8 +1,10 @@
 package b612.bicyclecommunity.service;
 
+import b612.bicyclecommunity.domain.user.Gender;
 import b612.bicyclecommunity.domain.user.LoginKind;
 import b612.bicyclecommunity.domain.user.User;
-import b612.bicyclecommunity.dto.res.TokenResponse;
+import b612.bicyclecommunity.dto.res.TokenRes;
+import b612.bicyclecommunity.dto.res.UserInfoRes;
 import b612.bicyclecommunity.global.jwt.JwtProvider;
 import b612.bicyclecommunity.repository.RefreshTokenRepository;
 import b612.bicyclecommunity.repository.UserRepository;
@@ -21,7 +23,7 @@ public class UserService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public TokenResponse mobileKakao(String id) {
+    public TokenRes mobileKakao(String id) {
         Optional<User> userOptional = userRepository.findById(id);
 
         User user;
@@ -35,6 +37,24 @@ public class UserService {
         String accessToken = jwtProvider.createAccessToken(id);
         String refreshToken = jwtProvider.createRefreshToken();
 
-        return new TokenResponse(refreshToken, accessToken);
+        return new TokenRes(refreshToken, accessToken);
+    }
+
+    @Transactional
+    public UserInfoRes info(String userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 유저 없음"));
+
+        return new UserInfoRes(user.getAge(), user.getName(), user.getAddress(), user.getGender());
+    }
+
+    @Transactional
+    public UserInfoRes edit(String userId, Integer age, String name, String address, Gender gender) {
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 유저 없음"));
+
+        user.edit(age, name, address, gender);
+
+        return new UserInfoRes(user.getAge(), user.getName(), user.getAddress(), user.getGender());
     }
 }

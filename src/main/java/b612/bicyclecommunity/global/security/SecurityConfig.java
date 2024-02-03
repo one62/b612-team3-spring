@@ -34,13 +34,11 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)
                 .formLogin(FormLoginConfigurer::disable)
                 .sessionManagement(SessionManagementConfigurer::disable)
-//                .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .authorizeHttpRequests().requestMatchers("/user/signup").permitAll()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
                                 .requestMatchers("/user/mobile/kakao").permitAll()
-                                .requestMatchers("/user/testing").authenticated()
+                                .requestMatchers("/user/testing", "/user/info", "/user/edit","/courseuser/save").authenticated()
                 );
 
         return httpSecurity.build();
