@@ -39,6 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request,response);
         } else if (jwtProvider.validateToken(refreshToken)){
+
             RefreshToken refreshTokenInRepo = refreshTokenRepository.findByToken(refreshToken).orElseThrow(() -> new RuntimeException("재로그인 필요."));
 
             String newRefreshToken = jwtProvider.createRefreshToken();

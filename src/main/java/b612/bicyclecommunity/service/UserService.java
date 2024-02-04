@@ -1,5 +1,6 @@
 package b612.bicyclecommunity.service;
 
+import b612.bicyclecommunity.domain.refreshtoken.RefreshToken;
 import b612.bicyclecommunity.domain.user.Gender;
 import b612.bicyclecommunity.domain.user.LoginKind;
 import b612.bicyclecommunity.domain.user.User;
@@ -36,6 +37,8 @@ public class UserService {
 
         String accessToken = jwtProvider.createAccessToken(id);
         String refreshToken = jwtProvider.createRefreshToken();
+
+        refreshTokenRepository.save(new RefreshToken(user.getId(), refreshToken));
 
         return new TokenRes(refreshToken, accessToken);
     }
