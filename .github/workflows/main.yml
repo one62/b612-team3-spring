@@ -52,5 +52,5 @@ jobs:
             docker pull ${{ secrets.DOCKER_REPO }}:spring
             docker stop spring-container
             docker rm spring-container
-            docker run -d --network="host" --name spring-container ${{ secrets.DOCKER_REPO }}:spring
+            docker run -d --network="host" -v /b612bicycle/courses:/b612bicycle/courses --name spring-container ${{ secrets.DOCKER_REPO }}:spring
       
