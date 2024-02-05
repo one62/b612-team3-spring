@@ -38,9 +38,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setHeader("accessToken", "Bearer " + newAccessToken);
 
             filterChain.doFilter(request,response);
-
-            return;
         } else if (jwtProvider.validateToken(refreshToken)){
+
             RefreshToken refreshTokenInRepo = refreshTokenRepository.findByToken(refreshToken).orElseThrow(() -> new RuntimeException("재로그인 필요."));
 
             String newRefreshToken = jwtProvider.createRefreshToken();
@@ -57,12 +56,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setHeader("refreshToken", "Bearer " + newRefreshToken);
 
             filterChain.doFilter(request, response);
-
-            return;
-        } else {
+        } else{
             filterChain.doFilter(request,response);
         }
-
     }
 
     public String extractToken(HttpServletRequest httpServletRequest, String tokenName){
