@@ -1,14 +1,19 @@
 package b612.bicyclecommunity.service;
 
 import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
 
 import b612.bicyclecommunity.domain.course.Course;
 import b612.bicyclecommunity.domain.user.User;
@@ -22,8 +27,8 @@ public class CourseService {
 	private final CourseRepository courseRepository;
 
 	@Transactional
-	public void saveCourse(User user, Integer meter, List<Pair<Double, Double>> courseArray) throws IOException {
-		Course course = Course.createCourse(user, meter);
+	public void saveCourse(User createdUser, Integer meter, List<Pair<Double, Double>> courseArray) throws IOException {
+		Course course = Course.createCourse(createdUser, meter);
 		courseRepository.saveAndFlush(course);
 
 		String filename = "/b612bicycle/courses/" + course.getId().toString();
@@ -34,5 +39,21 @@ public class CourseService {
 		}
 		writer.close();
 		course.setArrayUrl(filename);
+		courseRepository.save(course);
+	}
+
+	public List<Pair<Double, Double>> loadCourseArray(Integer courseId) throws FileNotFoundException, IOException, CsvValidationException {
+		Course course = courseRepository.findById(courseId).orElseThrow();
+
+		String filename = course.getArrayUrl();
+		CSVReader reader = new CSVReader(new FileReader(filename));
+		List<Pair<Double, Double>> courseArray = new ArrayList<>(); 
+		
+		String[] nextLine;
+		while ((nextLine = reader.readNext()) != null) {
+			courseArray.add(Pair.of(Double.parseDouble(nextLine[0]), Double.parseDouble(nextLine[1])));
+		}
+		reader.close();
+		return courseArray;
 	}
 }
