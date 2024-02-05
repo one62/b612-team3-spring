@@ -27,6 +27,7 @@ public class Course {
     /**
      *
      */
+    @Setter
     @Column(name = "course_array_url")
     private String arrayUrl;
 
