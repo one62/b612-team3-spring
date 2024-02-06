@@ -29,7 +29,7 @@ public class CourseService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public void saveCourse(String createdUserID, Integer meter, List<Pair<Double, Double>> courseArray) throws IOException {
+	public Integer saveCourse(String createdUserID, Integer meter, List<Pair<Double, Double>> courseArray) throws IOException {
 		User createdUser = userRepository.findById(createdUserID).orElseThrow();
 		Course course = Course.createCourse(createdUser, meter);
 		courseRepository.saveAndFlush(course);
@@ -43,6 +43,7 @@ public class CourseService {
 		writer.close();
 		course.setArrayUrl(filename);
 		courseRepository.save(course);
+		return course.getId();
 	}
 
 	public List<Pair<Double, Double>> loadCourseArray(Integer courseId) throws FileNotFoundException, IOException, CsvValidationException {
