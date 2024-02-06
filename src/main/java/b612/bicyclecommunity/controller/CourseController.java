@@ -48,7 +48,6 @@ public class CourseController {
         	courseService.saveCourse(userDetails.getUserId(), courseSaveReq.getMeter(), courseSaveReq.getCourseArray());
         	return ResponseEntity.ok().body("신규 코스 저장 완료");
     	} catch (IOException e) {
-        	// 로깅 등 예외 처리 로직
         	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("코스 저장 중 오류 발생");
     	}
 		// return ResponseEntity.ok().body("신규 코스 저장 완료");
