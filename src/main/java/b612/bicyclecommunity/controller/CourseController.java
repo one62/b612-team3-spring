@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 
 import org.springframework.data.util.Pair;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,12 +40,18 @@ public class CourseController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-		courseService.saveCourse(
-			userDetails.getUserId(),
-			courseSaveReq.getMeter(),
-			courseSaveReq.getCourseArray());
-
-			return ResponseEntity.ok().body("신규 코스 저장 완료");
+		// courseService.saveCourse(
+		// 	userDetails.getUserId(),
+		// 	courseSaveReq.getMeter(),
+		// 	courseSaveReq.getCourseArray());
+		try {
+        	courseService.saveCourse(userDetails.getUserId(), courseSaveReq.getMeter(), courseSaveReq.getCourseArray());
+        	return ResponseEntity.ok().body("신규 코스 저장 완료");
+    	} catch (IOException e) {
+        	// 로깅 등 예외 처리 로직
+        	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("코스 저장 중 오류 발생");
+    	}
+		// return ResponseEntity.ok().body("신규 코스 저장 완료");
 	}
 
 	@GetMapping("/{courseId}")
