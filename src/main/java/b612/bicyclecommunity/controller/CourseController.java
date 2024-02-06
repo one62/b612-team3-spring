@@ -46,15 +46,15 @@ public class CourseController {
 		// 	courseSaveReq.getMeter(),
 		// 	courseSaveReq.getCourseArray());
 		try {
-        	courseService.saveCourse(userDetails.getUserId(), courseSaveReq.getMeter(), courseSaveReq.getCourseArray());
-        	return ResponseEntity.ok().body("신규 코스 저장 완료");
+        	Integer i = courseService.saveCourse(userDetails.getUserId(), courseSaveReq.getMeter(), courseSaveReq.getCourseArray());
+        	return ResponseEntity.ok().body("신규 코스 " + i.toString() + " 저장 완료");
     	} catch (IOException e) {
         	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("코스 저장 중 오류 발생");
     	}
 		// return ResponseEntity.ok().body("신규 코스 저장 완료");
 	}
 
-	@GetMapping("/{courseId}")
+	@GetMapping("/courses/{courseId}")
 	public Flux<Pair<Double, Double>> getCourse(@PathVariable Integer courseId) throws CsvValidationException, FileNotFoundException, IOException {
 		List<Pair<Double, Double>> courseArray = courseService.loadCourseArray(courseId);
 		return Flux.fromIterable(courseArray);
