@@ -18,6 +18,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import b612.bicyclecommunity.domain.course.Course;
 import b612.bicyclecommunity.domain.user.User;
 import b612.bicyclecommunity.repository.CourseRepository;
+import b612.bicyclecommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -25,9 +26,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CourseService {
 	private final CourseRepository courseRepository;
+	private final UserRepository userRepository;
 
 	@Transactional
-	public void saveCourse(User createdUser, Integer meter, List<Pair<Double, Double>> courseArray) throws IOException {
+	public void saveCourse(String createdUserID, Integer meter, List<Pair<Double, Double>> courseArray) throws IOException {
+		User createdUser = userRepository.findById(createdUserID).orElseThrow();
 		Course course = Course.createCourse(createdUser, meter);
 		courseRepository.saveAndFlush(course);
 
