@@ -37,8 +37,8 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers("/user/mobile/kakao").permitAll()
-                                .requestMatchers("/user/testing", "/user/info", "/user/edit","/courseuser/save", "/course/**").authenticated()
+                                .requestMatchers("/user/mobile/kakao", "/course/courses/**").permitAll()
+                                .requestMatchers("/user/testing", "/user/info", "/user/edit","/courseuser/save", "/course/save").authenticated()
                 );
 
         return httpSecurity.build();
