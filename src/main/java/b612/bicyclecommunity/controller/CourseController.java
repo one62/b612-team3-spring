@@ -55,8 +55,8 @@ public class CourseController {
 	}
 
 	@GetMapping("/courses/{courseId}")
-	public Flux<Pair<Double, Double>> getCourse(@PathVariable Integer courseId) throws CsvValidationException, FileNotFoundException, IOException {
-		List<Pair<Double, Double>> courseArray = courseService.loadCourseArray(courseId);
+	public Flux<List<Double>> getCourse(@PathVariable Integer courseId) throws CsvValidationException, FileNotFoundException, IOException {
+		List<List<Double>> courseArray = courseService.loadCourseArray(courseId);
 		return Flux.fromIterable(courseArray);
 	}
 	

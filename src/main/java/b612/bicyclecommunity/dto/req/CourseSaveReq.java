@@ -10,6 +10,6 @@ import org.springframework.data.util.Pair;
 public class CourseSaveReq {
 	
 	private Integer meter;
-	private List<Pair<Double, Double>> courseArray;
+	private List<List<Double>> courseArray;
 	
 }
