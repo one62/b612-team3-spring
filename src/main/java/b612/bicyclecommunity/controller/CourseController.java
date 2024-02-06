@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -54,7 +55,7 @@ public class CourseController {
 	}
 
 	@GetMapping("/{courseId}")
-	public Flux<Pair<Double, Double>> getCourse(@RequestParam Integer courseId) throws CsvValidationException, FileNotFoundException, IOException {
+	public Flux<Pair<Double, Double>> getCourse(@PathVariable Integer courseId) throws CsvValidationException, FileNotFoundException, IOException {
 		List<Pair<Double, Double>> courseArray = courseService.loadCourseArray(courseId);
 		return Flux.fromIterable(courseArray);
 	}
