@@ -32,10 +32,10 @@
 // 		courseArray.add(Pair.of(3.0, 2.0));
 // 		User user = new User("1", LoginKind.KaKao);
 // 		userRepository.save(user);
-// 		courseService.saveCourse(user, 5, courseArray);
+// 		Integer i = courseService.saveCourse("1", 5, courseArray);
 
 // 		List<Pair<Double, Double>> courseArray2;
-// 		courseArray2 = courseService.loadCourseArray(1);
+// 		courseArray2 = courseService.loadCourseArray(i);
 // 		System.out.println(courseArray2);
 // 	}
 
