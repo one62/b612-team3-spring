@@ -1,5 +1,6 @@
 package b612.bicyclecommunity.service;
 
+import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,10 +12,6 @@ import java.util.Arrays;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvValidationException;
 
 import b612.bicyclecommunity.domain.course.Course;
 import b612.bicyclecommunity.domain.user.User;
@@ -30,35 +27,49 @@ public class CourseService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public Integer saveCourse(String createdUserID, Integer meter, List<List<Double>> courseArray) throws IOException {
+	public Integer saveCourse(String createdUserID, String name, String startTime, String endTime, int elapsedTime,
+	Double totalTravelDistance, String encodedPolyline, List<Double> startLatLng, List<Double> endLatLng, List<Double> centerLatLng,
+	List<Double> southwestLatLng, List<Double> northeastLatLng, Double zoom, int rating, int difficulty, String review, Boolean publicCourse) {
+
+		// course 생성 후 정보 저장
 		User createdUser = userRepository.findById(createdUserID).orElseThrow();
-		Course course = Course.createCourse(createdUser, meter);
+
+		Course course = Course.createCourse(
+			createdUser, name, startTime, endTime, elapsedTime, totalTravelDistance, startLatLng,
+			endLatLng, centerLatLng, southwestLatLng, northeastLatLng, zoom, rating, difficulty, review, publicCourse
+		);
 		courseRepository.saveAndFlush(course);
 
+		// 파일로 저장
 		String filename = "/b612bicycle/courses/" + course.getId().toString();
-		CSVWriter writer = new CSVWriter(new FileWriter(filename));
-		for (List<Double> list : courseArray) {
-			String[] data = {list.get(0).toString(), list.get(1).toString()};
-			writer.writeNext(data);
+		try (FileWriter writer = new FileWriter(filename)) {
+			writer.write(encodedPolyline);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		writer.close();
-		course.setArrayUrl(filename);
+		// 파일 경로 저장 후 ID 반환
+		course.setFileUrl(filename);
 		courseRepository.save(course);
 		return course.getId();
 	}
 
-	public List<List<Double>> loadCourseArray(Integer courseId) throws FileNotFoundException, IOException, CsvValidationException {
+
+	public String loadEncodedPolyline(Integer courseId) {
 		Course course = courseRepository.findById(courseId).orElseThrow();
 
-		String filename = course.getArrayUrl();
-		CSVReader reader = new CSVReader(new FileReader(filename));
-		List<List<Double>> courseArray = new ArrayList<>(); 
-		
-		String[] nextLine;
-		while ((nextLine = reader.readNext()) != null) {
-			courseArray.add(Arrays.asList(Double.parseDouble(nextLine[0]), Double.parseDouble(nextLine[1])));
+		String filename = course.getFileUrl();
+		StringBuilder builder = new StringBuilder();
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				builder.append(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		reader.close();
-		return courseArray;
+		
+		return builder.toString();
 	}
+	
 }
