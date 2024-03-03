@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.time.LocalDateTime;
 
@@ -19,15 +20,14 @@ public class Team {
     @Column(name = "team_id")
     private Integer id;
 
-    @Column(name = "team_name")
+    @Column(name = "team_name", unique = true)
     private String name;
 
     @Column(name = "team_comment")
     private String comment;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "team_location")
-    private Location location;
+    private String address;
 
     @Column(name = "team_created_at")
     private LocalDateTime createdAt;
@@ -35,4 +35,13 @@ public class Team {
     @Enumerated(EnumType.STRING)
     @Column(name = "team_kind")
     private Kind kind;
+
+
+    public Team(String name, String comment, String address, LocalDateTime createdAt, Kind kind){
+        this.name = name;
+        this.comment = comment;
+        this.address = address;
+        this.createdAt = createdAt;
+        this.kind = kind;
+    }
 }
