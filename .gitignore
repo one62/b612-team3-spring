@@ -36,6 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 src/main/resources/application-dev.properties
-/src/test/**
+/src/test/java/b612/bicyclecommunity/controller/
 
 
