@@ -1,9 +1,9 @@
 package b612.bicyclecommunity.controller;
 
-import b612.bicyclecommunity.dto.req.MobileKaKaoLoginReq;
-import b612.bicyclecommunity.dto.req.UserEditReq;
-import b612.bicyclecommunity.dto.res.TokenRes;
-import b612.bicyclecommunity.dto.res.UserInfoRes;
+import b612.bicyclecommunity.dto.user.req.MobileKaKaoLoginReq;
+import b612.bicyclecommunity.dto.user.req.UserEditReq;
+import b612.bicyclecommunity.dto.user.res.TokenRes;
+import b612.bicyclecommunity.dto.user.res.UserInfoRes;
 import b612.bicyclecommunity.global.security.UserDetailsImpl;
 import b612.bicyclecommunity.service.UserService;
 import jakarta.validation.Valid;

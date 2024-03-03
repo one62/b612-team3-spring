@@ -1,4 +1,4 @@
-package b612.bicyclecommunity.dto.req;
+package b612.bicyclecommunity.dto.user.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

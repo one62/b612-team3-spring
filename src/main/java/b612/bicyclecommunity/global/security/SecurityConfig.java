@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
                                 .requestMatchers("/user/mobile/kakao").permitAll()
+                                .requestMatchers("/team/**").authenticated()
                                 .requestMatchers("/user/testing", "/user/info", "/user/edit","/courseuser/save").authenticated()
                 );
 
