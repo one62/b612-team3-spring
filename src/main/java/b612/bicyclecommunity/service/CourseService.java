@@ -53,6 +53,9 @@ public class CourseService {
 		return course.getId();
 	}
 
+	public List<Course> loadCourseList() {
+		return courseRepository.findAll();
+	}
 
 	public String loadEncodedPolyline(Integer courseId) {
 		Course course = courseRepository.findById(courseId).orElseThrow();

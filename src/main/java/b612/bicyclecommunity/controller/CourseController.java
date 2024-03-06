@@ -8,6 +8,8 @@ import b612.bicyclecommunity.dto.req.CourseSaveReq;
 import b612.bicyclecommunity.global.security.UserDetailsImpl;
 import b612.bicyclecommunity.service.CourseService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,11 +44,18 @@ public class CourseController {
        	return ResponseEntity.ok().body("신규 코스 " + newCourseId.toString() + " 저장 완료");
 	}
 
+	@GetMapping("/courses")
+	public ResponseEntity<?> getCourses() {
+		try {
+			return ResponseEntity.ok().body(courseService.loadCourseList());
+		} catch (Exception e) {
+        	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("코스 불러오기 중 오류 발생");
+    	}
+	}
+
 	@GetMapping("/courses/{courseId}")
 	public ResponseEntity<String> getCourse(@PathVariable Integer courseId) {
 		return ResponseEntity.ok(courseService.loadEncodedPolyline(courseId));
 	}
-	
-	
 	
 }
