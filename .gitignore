@@ -35,8 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
-src/main/resources/application-dev.properties
-
+src/main/resources/application-dev.*
 
 ### firebase
 src/main/resources/firebase/
