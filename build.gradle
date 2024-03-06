@@ -46,9 +46,12 @@ dependencies {
 
 	// 파이어베이스 SDK
 	implementation 'com.google.firebase:firebase-admin:9.2.0'
+  
+	//websocket 관련 패키지
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+  
 	// 데이터 전송 관련 패키지
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-
+  implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
 tasks.named('test') {

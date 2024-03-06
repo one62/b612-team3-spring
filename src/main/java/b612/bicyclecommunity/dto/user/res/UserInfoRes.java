@@ -1,4 +1,4 @@
-package b612.bicyclecommunity.dto.res;
+package b612.bicyclecommunity.dto.user.res;
 
 import b612.bicyclecommunity.domain.user.Gender;
 import lombok.AllArgsConstructor;

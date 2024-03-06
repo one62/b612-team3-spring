@@ -1,6 +1,6 @@
 package b612.bicyclecommunity.controller;
 
-import b612.bicyclecommunity.dto.req.CourseUserSaveReq;
+import b612.bicyclecommunity.dto.user.req.CourseUserSaveReq;
 import b612.bicyclecommunity.global.security.UserDetailsImpl;
 import b612.bicyclecommunity.service.CourseUserService;
 import lombok.RequiredArgsConstructor;
