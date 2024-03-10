@@ -40,7 +40,8 @@ public class SecurityConfig {
                                 .requestMatchers("/user/mobile/kakao").permitAll()
                                 .requestMatchers("/ws/**").permitAll()
                                 .requestMatchers("/team/**").authenticated()
-                                .requestMatchers("/user/testing", "/user/info", "/user/edit","/courseuser/save").authenticated()
+                                .requestMatchers("/user/testing", "/user/info", "/user/edit", "/user/team").authenticated()
+                                .requestMatchers("/courseuser/**").authenticated()
                 );
 
         return httpSecurity.build();
