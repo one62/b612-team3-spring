@@ -1,5 +1,6 @@
 package b612.bicyclecommunity.controller;
 
+import b612.bicyclecommunity.dto.team.res.SearchRes;
 import b612.bicyclecommunity.dto.user.req.MobileKaKaoLoginReq;
 import b612.bicyclecommunity.dto.user.req.UserEditReq;
 import b612.bicyclecommunity.dto.user.res.TokenRes;
@@ -12,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -53,5 +56,16 @@ public class UserController {
         );
 
         return ResponseEntity.ok().body(userInfoRes);
+    }
+
+    @GetMapping("/team")
+    public ResponseEntity<?> teams(@RequestParam("page") int page,
+                                  @RequestParam("size") int size){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        List<b612.bicyclecommunity.dto.team.res.SearchRes> teams = userService.teams(userDetails.getUserId(), page, size);
+
+        return ResponseEntity.ok().body(teams);
     }
 }
