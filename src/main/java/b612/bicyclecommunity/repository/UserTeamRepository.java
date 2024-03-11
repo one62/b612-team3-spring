@@ -23,8 +23,8 @@ public interface UserTeamRepository extends JpaRepository<UserTeam, Integer> {
     @Query("select count(ut) from UserTeam ut where ut.team.name=:name")
     Integer countByTeamName(String name);
 
-    @Query("select ut from UserTeam ut where ut.team = :team and ut.user = :user")
-    public abstract Boolean teamHasUser(@Param("team") Team team, @Param("user") User user);
+    @Query("select case when count(ut)> 0 then true else false end from UserTeam ut where ut.team = :team and ut.user = :user")
+    Boolean teamHasUser(@Param("team") Team team, @Param("user") User user);
 
     @Query("select new b612.bicyclecommunity.dto.team.res.SearchRes(ut.team.name, ut.team.comment, ut.team.address, ut.team.createdAt, ut.team.kind) from UserTeam ut where ut.user = :user")
     Page<SearchRes> findByUser(User user, Pageable pageable);
