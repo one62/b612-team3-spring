@@ -25,15 +25,15 @@ public class CourseUserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        courseUserService.save(
-                userDetails.getUserId(),
-                courseUserSaveReq.getCourseName(),
-                courseUserSaveReq.getStart(),
-                courseUserSaveReq.getEnd(),
-                courseUserSaveReq.getRate(),
-                courseUserSaveReq.getComment(),
-                courseUserSaveReq.getAverageSpeed(),
-                courseUserSaveReq.getRestMinute()
+        courseUserService.saveCourseUser(
+            userDetails.getUserId(),
+            courseUserSaveReq.getCourseId(),
+            courseUserSaveReq.getStartTime(),
+            courseUserSaveReq.getEndTime(),
+            courseUserSaveReq.getElapsedTime(),
+            courseUserSaveReq.getRating(),
+            courseUserSaveReq.getDifficulty(),
+            courseUserSaveReq.getReview()
         );
 
         return ResponseEntity.ok().body("주행기록 저장 완료");
