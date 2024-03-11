@@ -42,6 +42,7 @@ public class SecurityConfig {
                                 .requestMatchers("/team/**").authenticated()
                                 .requestMatchers("/user/testing", "/user/info", "/user/edit", "/user/team").authenticated()
                                 .requestMatchers("/courseuser/**").authenticated()
+                                .requestMatchers("/course/**").authenticated()
                 );
 
         return httpSecurity.build();
