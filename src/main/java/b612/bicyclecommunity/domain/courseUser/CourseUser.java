@@ -6,11 +6,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
 
 @Entity(name = "course_user")
 @Getter
+@Setter(AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CourseUser {
 
@@ -19,23 +20,14 @@ public class CourseUser {
     @Column(name = "course_user_id")
     private Integer id;
 
-    @Column(name = "course_user_start")
-    private LocalDateTime start;
+    String startTime; // 시작시간, Iso8601 포맷
+    String endTime; // 끝난시간, Iso8601 포맷
+    int elapsedTime; // 총 걸린 시간, second
 
-    @Column(name = "course_user_end")
-    private LocalDateTime end;
+    int rating; //별점(1~5)
+    int difficulty; //난이도(1~5)
+    String review;
 
-    @Column(name = "course_user_rate")
-    private Integer rate;
-
-    @Column(name = "course_user_comment")
-    private String comment;
-
-    @Column(name = "course_user_average_spped")
-    private Double averageSpeed;
-
-    @Column(name = "course_user_rest_minute")
-    private Double restMinute;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -45,22 +37,18 @@ public class CourseUser {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    /*save 에서 사용하는 생성자*/
-    public CourseUser(LocalDateTime start,
-               LocalDateTime end,
-               Integer rate,
-               String comment,
-               Double averageSpeed,
-               Double restMinute,
-               User user,
-               Course course){
-        this.start = start;
-        this.end = end;
-        this.rate = rate;
-        this.comment = comment;
-        this.averageSpeed = averageSpeed;
-        this.restMinute = restMinute;
-        this.user = user;
-        this.course = course;
+
+    public static CourseUser createCourseUser(String startTime, String endTime, int elapsedTime,
+    int rating, int difficulty, String review, User user, Course course) {
+        CourseUser cu = new CourseUser();
+        cu.setStartTime(startTime);
+        cu.setEndTime(endTime);
+        cu.setElapsedTime(elapsedTime);
+        cu.setRating(rating);
+        cu.setDifficulty(difficulty);
+        cu.setReview(review);
+        cu.setUser(user);
+        cu.setCourse(course);
+        return cu;
     }
 }

@@ -3,18 +3,19 @@ package b612.bicyclecommunity.dto.user.req;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 public class CourseUserSaveReq {
 
-    private LocalDateTime start;
-    private LocalDateTime end;
-    private Integer rate;
-    private String comment;
-    private Double averageSpeed;
-    private Double restMinute;
+    Integer courseId;
 
-    private String courseName;
+	String startTime; // 시작시간, Iso8601 포맷
+	String endTime; // 끝난시간, Iso8601 포맷
+	int elapsedTime; // 총 걸린 시간, second
+	int rating; // 별점 (1~5)
+	int difficulty; // 난이도 (1~5)
+	String review; // 리뷰
+	Boolean publicCourse; // 공개여부 (true면 공개 false면 비공개)
 }

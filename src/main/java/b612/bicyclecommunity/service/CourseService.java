@@ -29,16 +29,16 @@ public class CourseService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public Integer saveCourse(String createdUserID, String name, String startTime, String endTime, int elapsedTime,
+	public Integer saveCourse(String createdUserID, String name,
 	Double totalTravelDistance, String encodedPolyline, List<Double> startLatLng, List<Double> endLatLng, List<Double> centerLatLng,
-	List<Double> southwestLatLng, List<Double> northeastLatLng, Double zoom, int rating, int difficulty, String review, Boolean publicCourse) {
+	List<Double> southwestLatLng, List<Double> northeastLatLng, Double zoom, Boolean publicCourse) {
 
 		// course 생성 후 정보 저장
 		User createdUser = userRepository.findById(createdUserID).orElseThrow();
 
 		Course course = Course.createCourse(
-			createdUser, name, startTime, endTime, elapsedTime, totalTravelDistance, startLatLng,
-			endLatLng, centerLatLng, southwestLatLng, northeastLatLng, zoom, rating, difficulty, review, publicCourse
+			createdUser, name, totalTravelDistance, startLatLng,
+			endLatLng, centerLatLng, southwestLatLng, northeastLatLng, zoom, publicCourse
 		);
 		courseRepository.saveAndFlush(course);
 

@@ -19,23 +19,16 @@ public class CourseUserService {
     private final CourseUserRepository courseUserRepository;
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
+
     @Transactional
-    public void save(String userId, String courseName, LocalDateTime start, LocalDateTime end, Integer rate, String comment, Double averageSpeed, Double restMinute) {
+    public void saveCourseUser(String userId, Integer courseId, String startTime, String endTime, int elapsedTime,
+    int rating, int difficulty, String review) {
 
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 유저 없음"));
-        Course course = courseRepository.findByName(courseName).orElseThrow(() -> new RuntimeException("해당 코스 없음"));
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("해당 코스 없음"));
 
-        CourseUser courseUser = new CourseUser(
-                start,
-                end,
-                rate,
-                comment,
-                averageSpeed,
-                restMinute,
-                user,
-                course
-        );
+        CourseUser cu = CourseUser.createCourseUser(startTime, endTime, elapsedTime, rating, difficulty, review, user, course);
 
-        courseUserRepository.save(courseUser);
+        courseUserRepository.save(cu);
     }
 }
