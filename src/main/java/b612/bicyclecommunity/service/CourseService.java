@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,21 +60,17 @@ public class CourseService {
 	}
 
 	public String loadEncodedPolyline(Integer courseId) {
-		Course course = courseRepository.findById(courseId).orElseThrow();
+		Course course = courseRepository.findById(courseId)
+			.orElseThrow(() -> new IllegalStateException(courseId + "course not found"));
 
 		String filename = course.getFileUrl();
-		StringBuilder builder = new StringBuilder();
-
-		try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-			String line;
-			while ((line = reader.readLine()) != null) {
-				builder.append(line);
-			}
+		
+		try {
+			return new String(Files.readAllBytes(Paths.get(filename)));
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException("파일 읽기 실패", e);
 		}
-		
-		return builder.toString();
 	}
 	
 }
