@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
-import b612.bicyclecommunity.dto.req.CourseSaveReq;
+import b612.bicyclecommunity.dto.course.req.CourseSaveReq;
 import b612.bicyclecommunity.global.security.UserDetailsImpl;
 import b612.bicyclecommunity.service.CourseService;
 import b612.bicyclecommunity.service.CourseUserService;
@@ -43,7 +43,7 @@ public class CourseController {
 			courseSaveReq.getTotalTravelDistance(), courseSaveReq.getEncodedPolyline(), courseSaveReq.getStartLatLng(),
 			courseSaveReq.getEndLatLng(), courseSaveReq.getCenterLatLng(), courseSaveReq.getSouthwestLatLng(),
 			courseSaveReq.getNortheastLatLng(), courseSaveReq.getZoom(),
-			courseSaveReq.getPublicCourse()
+			courseSaveReq.getPublicCourse(), courseSaveReq.getOriginal()
 		);
 
 		courseUserService.saveCourseUser(
@@ -60,10 +60,14 @@ public class CourseController {
        	return ResponseEntity.ok().body("신규 코스 " + newCourseId.toString() + " 저장 완료");
 	}
 
-	@GetMapping("/courses/my")
-	public ResponseEntity<?> getCourses() {
+	@GetMapping("/my")
+	public ResponseEntity<?> getMyCourses() {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
 		try {
-			return ResponseEntity.ok().body(courseService.loadCourseList());
+			return ResponseEntity.ok().body(courseService.loadCourseListByCreatedUserOriginal(userDetails.getUserId()));
 		} catch (Exception e) {
         	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("코스 불러오기 중 오류 발생");
     	}

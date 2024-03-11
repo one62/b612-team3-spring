@@ -1,4 +1,4 @@
-package b612.bicyclecommunity.dto.req;
+package b612.bicyclecommunity.dto.course.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +24,6 @@ public class CourseSaveReq {
 	int difficulty; // 난이도 (1~5)
 	String review; // 리뷰
 	Boolean publicCourse; // 공개여부 (true면 공개 false면 비공개)
+	Boolean original; // 자기 코스인지, 다른 사람이 생성한 코스를 따라 주행했는지
 
 }

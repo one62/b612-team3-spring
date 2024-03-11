@@ -31,14 +31,14 @@ public class CourseService {
 	@Transactional
 	public Integer saveCourse(String createdUserID, String name,
 	Double totalTravelDistance, String encodedPolyline, List<Double> startLatLng, List<Double> endLatLng, List<Double> centerLatLng,
-	List<Double> southwestLatLng, List<Double> northeastLatLng, Double zoom, Boolean publicCourse) {
+	List<Double> southwestLatLng, List<Double> northeastLatLng, Double zoom, Boolean publicCourse, Boolean original) {
 
 		// course 생성 후 정보 저장
 		User createdUser = userRepository.findById(createdUserID).orElseThrow();
 
 		Course course = Course.createCourse(
 			createdUser, name, totalTravelDistance, startLatLng,
-			endLatLng, centerLatLng, southwestLatLng, northeastLatLng, zoom, publicCourse
+			endLatLng, centerLatLng, southwestLatLng, northeastLatLng, zoom, publicCourse, original
 		);
 		courseRepository.saveAndFlush(course);
 
@@ -55,9 +55,12 @@ public class CourseService {
 		return course.getId();
 	}
 
-	public List<Course> loadCourseList() {
-		return courseRepository.findAll();
+
+	public List<Course> loadCourseListByCreatedUserOriginal(String createdUserID) {
+		User createdUser = userRepository.findById(createdUserID).orElseThrow();
+		return courseRepository.findByCreatedUserAndOriginal(createdUser, true);
 	}
+
 
 	public String loadEncodedPolyline(Integer courseId) {
 		Course course = courseRepository.findById(courseId)

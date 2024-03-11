@@ -9,10 +9,12 @@ import b612.bicyclecommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 import java.time.LocalDateTime;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CourseUserService {
 
@@ -30,5 +32,10 @@ public class CourseUserService {
         CourseUser cu = CourseUser.createCourseUser(startTime, endTime, elapsedTime, rating, difficulty, review, user, course);
 
         courseUserRepository.save(cu);
+    }
+
+    public List<CourseUser> loadCourseUserByUser(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 유저 없음"));
+        return courseUserRepository.findByUser(user);
     }
 }

@@ -44,11 +44,13 @@ public class Course {
     String name; // 코스 이름
     Boolean publicCourse; // 공개여부 (true면 공개 false면 비공개)
 
+    Boolean original; // 자기 코스인지, 다른 사람이 생성한 코스를 따라 주행했는지
+
 
     // 초기값 필요한 값들은 모두 추가해야함
     public static Course createCourse(User createdUser, String name, 
     Double totalTravelDistance, List<Double> startLatLng, List<Double> endLatLng, List<Double> centerLatLng,
-    List<Double> southwestLatLng, List<Double> northeastLatLng, Double zoom, Boolean publicCourse) {
+    List<Double> southwestLatLng, List<Double> northeastLatLng, Double zoom, Boolean publicCourse, Boolean original) {
         Course course = new Course();
         course.setCreatedUser(createdUser);
         course.setName(name);
@@ -60,6 +62,7 @@ public class Course {
         course.setNortheastLatLng(northeastLatLng);
         course.setZoom(zoom);
         course.setPublicCourse(publicCourse);
+        course.setOriginal(original);
         return course;
     }
 }
