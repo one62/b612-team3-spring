@@ -17,5 +17,4 @@ public class CourseUserSaveReq {
 	int rating; // 별점 (1~5)
 	int difficulty; // 난이도 (1~5)
 	String review; // 리뷰
-	Boolean publicCourse; // 공개여부 (true면 공개 false면 비공개)
 }

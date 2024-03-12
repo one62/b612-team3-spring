@@ -28,7 +28,6 @@ public class CourseUser {
     int difficulty; //난이도(1~5)
     String review;
 
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
