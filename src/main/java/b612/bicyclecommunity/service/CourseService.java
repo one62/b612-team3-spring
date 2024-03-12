@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import b612.bicyclecommunity.domain.course.Course;
 import b612.bicyclecommunity.domain.user.User;
+import b612.bicyclecommunity.dto.course.res.CourseRes;
 import b612.bicyclecommunity.repository.CourseRepository;
 import b612.bicyclecommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,9 +57,8 @@ public class CourseService {
 	}
 
 
-	public List<Course> loadCourseListByCreatedUserOriginal(String createdUserID) {
-		User createdUser = userRepository.findById(createdUserID).orElseThrow();
-		return courseRepository.findByCreatedUserAndOriginal(createdUser, true);
+	public List<CourseRes> loadCourses(String createdUserID) {
+		
 	}
 
 
