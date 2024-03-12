@@ -15,10 +15,14 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Optional;
+
 import b612.bicyclecommunity.domain.course.Course;
+import b612.bicyclecommunity.domain.courseUser.CourseUser;
 import b612.bicyclecommunity.domain.user.User;
 import b612.bicyclecommunity.dto.course.res.CourseRes;
 import b612.bicyclecommunity.repository.CourseRepository;
+import b612.bicyclecommunity.repository.CourseUserRepository;
 import b612.bicyclecommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class CourseService {
 	private final CourseRepository courseRepository;
 	private final UserRepository userRepository;
+	private final CourseUserRepository courseUserRepository;
 
 	@Transactional
 	public Integer saveCourse(String createdUserID, String name,
@@ -57,11 +62,6 @@ public class CourseService {
 	}
 
 
-	public List<CourseRes> loadCourses(String createdUserID) {
-		
-	}
-
-
 	public String loadEncodedPolyline(Integer courseId) {
 		Course course = courseRepository.findById(courseId)
 			.orElseThrow(() -> new IllegalStateException(courseId + "course not found"));
@@ -76,4 +76,40 @@ public class CourseService {
 		}
 	}
 	
+
+	private record courseResData(
+		Integer reviewCount, Integer avgElapsedTime, Double avgRating, Double avgDifficulty
+	) {}
+
+	private courseResData getCourseResData(Integer courseId) {
+		// 리뷰 개수, 평균 주행 시간, 평균 별점, 평균 난이도
+		// courseuser에서 courseId로 조회
+		List<CourseUser> courseUsers = courseUserRepository.findByCourseId(courseId).orNull();
+		
+		Integer reviewCount = courseUsers.size();
+		Integer avgElapsedTime = courseUsers.stream().mapToInt(CourseUser::getElapsedTime).sum() / reviewCount;
+		Double avgRating = courseUsers.stream().mapToDouble(CourseUser::getRating).average().orElse(0);
+		Double avgDifficulty = courseUsers.stream().mapToDouble(CourseUser::getDifficulty).average().orElse(0);
+
+		return new courseResData(reviewCount, avgElapsedTime, avgRating, avgDifficulty);
+	}
+
+
+	public List<CourseRes> loadCoursesRes(String createdUserID) {
+		List<Course> courses = courseRepository.findByCreatedUserAndOriginal(userRepository.findById(createdUserID).orElseThrow(), true);
+		List<CourseRes> courseResList = new ArrayList<>();
+		for (Course course : courses) {
+			courseResData data = getCourseResData(course.getId());
+			courseResList.add(new CourseRes(
+				course.getId(), course.getName(), course.getCreatedUser(), course.getOriginal(),
+				course.getTotalTravelDistance(), course.getZoom(), course.getPublicCourse(),
+				course.getStartLatLng(), course.getEndLatLng(), course.getCenterLatLng(),
+				course.getSouthwestLatLng(), course.getNortheastLatLng(),
+				data.reviewCount, data.avgElapsedTime, data.avgRating, data.avgDifficulty
+			));
+		}
+		return courseResList;
+	}
+
+
 }

@@ -95,7 +95,7 @@ public class CourseController {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
 		try {
-			return ResponseEntity.ok().body(courseService.loadCourseListByCreatedUserOriginal(userDetails.getUserId()));
+			return ResponseEntity.ok().body(courseService.loadCoursesRes(userDetails.getUserId()));
 		} catch (Exception e) {
         	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("코스 불러오기 중 오류 발생");
     	}

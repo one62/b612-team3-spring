@@ -18,6 +18,7 @@ public class CourseRes {
 	 * 	createdUser가 자신이 아니고, original이 true이며, publicCourse가 true인 경우
 	 */
 	
+	Integer courseId; // 코스 아이디
 	String name; // 코스 이름
 	User createdUser; // 코스 생성한 사용자
 	Boolean original; // 자기 코스인지, 다른 사람이 생성한 코스를 따라 주행했는지
@@ -31,10 +32,10 @@ public class CourseRes {
 	List<Double> southwestLatLng; // 지도의 남서쪽 좌표
 	List<Double> northeastLatLng; // 지도의 북동쪽 좌표
 
-	int avgElapsedTime; // 평균 주행 시간
+	Integer reviewCount; // 리뷰 개수
+	Integer avgElapsedTime; // 평균 주행 시간
 	Double avgRating; // 평균 별점
 	Double avgDifficulty; // 평균 난이도
-	int reviewCount; // 리뷰 개수
 	
 
 
