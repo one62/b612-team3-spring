@@ -1,6 +1,7 @@
 package b612.bicyclecommunity.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -89,13 +90,13 @@ public class CourseController {
 	
 	// 1. 자신이 생성한 코스만 조회. original = true.
 	@GetMapping("/my")
-	public ResponseEntity<?> getMyCourses() {
+	public ResponseEntity<?> getMyCourses(@RequestParam int page, @RequestParam int size) {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
 		try {
-			return ResponseEntity.ok().body(courseService.loadCoursesRes(userDetails.getUserId()));
+			return ResponseEntity.ok().body(courseService.loadCoursesRes(userDetails.getUserId(), page, size));
 		} catch (Exception e) {
         	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("코스 불러오기 중 오류 발생");
     	}

@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,20 +98,20 @@ public class CourseService {
 	}
 
 
-	public List<CourseRes> loadCoursesRes(String createdUserID) {
-		List<Course> courses = courseRepository.findByCreatedUserAndOriginal(userRepository.findById(createdUserID).orElseThrow(), true);
-		List<CourseRes> courseResList = new ArrayList<>();
-		for (Course course : courses) {
+	public Page<CourseRes> loadCoursesRes(String createdUserID, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Course> courses = courseRepository.findByCreatedUserAndOriginal(userRepository.findById(createdUserID).orElseThrow(), true, pageable);
+		Page<CourseRes> courseResPage = courses.map(course -> {
 			courseResData data = getCourseResData(course.getId());
-			courseResList.add(new CourseRes(
+			return new CourseRes(
 				course.getId(), course.getName(), course.getCreatedUser(), course.getOriginal(),
 				course.getTotalTravelDistance(), course.getZoom(), course.getPublicCourse(),
 				course.getStartLatLng(), course.getEndLatLng(), course.getCenterLatLng(),
 				course.getSouthwestLatLng(), course.getNortheastLatLng(),
 				data.reviewCount, data.avgElapsedTime, data.avgRating, data.avgDifficulty
-			));
-		}
-		return courseResList;
+			);
+		});
+		return courseResPage;
 	}
 
 
